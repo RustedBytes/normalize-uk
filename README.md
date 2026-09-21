@@ -1,6 +1,7 @@
 # ukrainian-tn
 
 [![CI](https://github.com/RustedBytes/ukrainian-tn/actions/workflows/ci.yml/badge.svg)](https://github.com/RustedBytes/ukrainian-tn/actions/workflows/ci.yml)
+[![PyPI version](https://img.shields.io/pypi/v/ukrainian-tn.svg)](https://pypi.org/project/ukrainian-tn/)
 
 Ukrainian text normalization, tokenization and sentence splitting in Rust,
 with optional native Python bindings.
