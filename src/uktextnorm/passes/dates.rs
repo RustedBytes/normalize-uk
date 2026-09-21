@@ -553,7 +553,7 @@ pub(crate) fn normalize_dates(
         let month = if MONTHS_GENITIVE.contains(&source.as_str()) {
             month_name(&source)
         } else if LOCATIVE.contains(&source.as_str()) {
-            source.clone()
+            source
         } else {
             month_nominative(&source)
         };

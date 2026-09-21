@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use std::sync::LazyLock;
 
 use super::lexicon::{self, FinanceUnit, Gender, Unit};
-use super::morphology::{feminine_last, plural, plural_of, PRONUNCIATION};
+use super::morphology::{feminine_last, plural, plural_of, pronunciation};
 use super::numbers::{
     decimal_to_words_or_digits, number_digits_or_words, number_to_words,
     number_to_words_digit_by_digit, ordinal_words,
@@ -135,16 +135,13 @@ pub(crate) fn spell_identifier_letters(letters: &str) -> String {
     for cp in letters.chars() {
         if cp.is_ascii() {
             if let Some(name) = LATIN_LETTERS.get(&cp.to_ascii_uppercase()) {
-                parts.push((*name).to_owned());
+                parts.push(*name);
             }
-        } else {
-            let upper = upper_cp(cp).to_string();
-            if let Some(name) = PRONUNCIATION.get(upper.as_str()) {
-                parts.push((*name).to_owned());
-            }
+        } else if let Some(name) = pronunciation(upper_cp(cp)) {
+            parts.push(name);
         }
     }
-    join(&parts)
+    parts.join(" ")
 }
 
 /// Reads a run of digits inside an identifier: short groups as a number, long

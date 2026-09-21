@@ -293,14 +293,14 @@ static ASR_TARGETS: LazyLock<HashMap<String, &'static str>> = LazyLock::new(|| {
 ///
 /// Collisions (two acronyms whose spellings fold together) are dropped.
 static ASR_SPELLED_ACRONYMS: LazyLock<HashMap<String, &'static str>> = LazyLock::new(|| {
-    use crate::uktextnorm::morphology::PRONUNCIATION;
+    use crate::uktextnorm::morphology::pronunciation;
     let mut by_key: HashMap<String, Option<&'static str>> = HashMap::new();
     for &(acronym, _) in lexicon::ACRONYMS.iter() {
         // Spell each letter by its Ukrainian name and glue the names together.
         let mut spelled = String::new();
         let mut ok = true;
         for cp in acronym.chars() {
-            if let Some(name) = PRONUNCIATION.get(cp.to_string().as_str()) {
+            if let Some(name) = pronunciation(cp) {
                 spelled.push_str(name);
             } else {
                 ok = false;

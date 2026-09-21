@@ -21,7 +21,7 @@ const SPACE: &str = r" \t\n\r\x0B\x0C";
 /// Rewrites ECMAScript's ASCII-only escapes into explicit Rust equivalents.
 pub(crate) fn translate(pattern: &str) -> String {
     let mut out = String::with_capacity(pattern.len() + 32);
-    let mut chars = pattern.chars().peekable();
+    let mut chars = pattern.chars();
     let mut in_class = false;
     while let Some(ch) = chars.next() {
         if ch != '\\' {

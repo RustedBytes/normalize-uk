@@ -164,8 +164,7 @@ pub(crate) fn best_fuzzy_match<'a, I>(token: &str, candidates: I) -> Option<(&'a
 where
     I: IntoIterator<Item = &'a str>,
 {
-    let needle: Vec<char> = token.chars().collect();
-    let budget = distance_budget(needle.len());
+    let budget = distance_budget(token.chars().count());
     best_fuzzy_match_within(token, candidates, budget)
 }
 

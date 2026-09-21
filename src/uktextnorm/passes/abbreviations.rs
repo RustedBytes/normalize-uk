@@ -4,10 +4,10 @@ use std::collections::HashMap;
 use std::sync::LazyLock;
 
 use crate::uktextnorm::lexicon;
-use crate::uktextnorm::morphology::{PRONUNCIATION, TRANSLITERATION};
+use crate::uktextnorm::morphology::{pronunciation, TRANSLITERATION};
 use crate::uktextnorm::readers::ABBREVIATIONS;
 use crate::uktextnorm::text::{
-    capitalize_first_letter, compact_spaces_lower, is_latin, is_uk, is_upper_uk, join, lower_cp,
+    capitalize_first_letter, compact_spaces_lower, is_latin, is_uk, is_upper_uk, lower_cp,
     lower_text,
 };
 
@@ -135,11 +135,8 @@ pub fn expand_abbreviations(text: &str) -> String {
             out.push_str(token);
             continue;
         }
-        let parts: Vec<String> = token
-            .chars()
-            .filter_map(|c| PRONUNCIATION.get(c.to_string().as_str()).map(|&s| s.to_owned()))
-            .collect();
-        out.push_str(&join(&parts));
+        let parts: Vec<_> = token.chars().filter_map(pronunciation).collect();
+        out.push_str(&parts.join(" "));
     }
     out
 }

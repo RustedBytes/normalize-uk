@@ -19,7 +19,7 @@ struct Rng(u64);
 
 impl Rng {
     fn new(seed: u64) -> Self {
-        Rng(seed.max(1))
+        Self(seed.max(1))
     }
     fn next(&mut self) -> u64 {
         let mut x = self.0;

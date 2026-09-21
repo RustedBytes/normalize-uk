@@ -144,17 +144,45 @@ pub(crate) static COMPOUND_PREFIX_FORMS: LazyLock<HashMap<&'static str, &'static
     ])
 });
 
-/// How each Cyrillic letter is named when an acronym is spelled out.
-#[rustfmt::skip]
-pub(crate) static PRONUNCIATION: LazyLock<HashMap<&'static str, &'static str>> = LazyLock::new(|| {
-    map(&[
-        ("А", "а"), ("Б", "бе"), ("В", "ве"), ("Г", "ге"), ("Ґ", "ґе"), ("Д", "де"), ("Е", "е"),
-        ("Є", "є"), ("Ж", "же"), ("З", "зе"), ("И", "и"), ("І", "і"), ("Ї", "ї"), ("Й", "йот"),
-        ("К", "ка"), ("Л", "ел"), ("М", "ем"), ("Н", "ен"), ("О", "о"), ("П", "пе"), ("Р", "ер"),
-        ("С", "ес"), ("Т", "те"), ("У", "у"), ("Ф", "еф"), ("Х", "ха"), ("Ц", "це"), ("Ч", "че"),
-        ("Ш", "ша"), ("Щ", "ща"), ("Ь", "м'який знак"), ("Ю", "ю"), ("Я", "я"),
-    ])
-});
+/// Returns the spoken name of an uppercase Ukrainian letter.
+pub(crate) const fn pronunciation(letter: char) -> Option<&'static str> {
+    Some(match letter {
+        'А' => "а",
+        'Б' => "бе",
+        'В' => "ве",
+        'Г' => "ге",
+        'Ґ' => "ґе",
+        'Д' => "де",
+        'Е' => "е",
+        'Є' => "є",
+        'Ж' => "же",
+        'З' => "зе",
+        'И' => "и",
+        'І' => "і",
+        'Ї' => "ї",
+        'Й' => "йот",
+        'К' => "ка",
+        'Л' => "ел",
+        'М' => "ем",
+        'Н' => "ен",
+        'О' => "о",
+        'П' => "пе",
+        'Р' => "ер",
+        'С' => "ес",
+        'Т' => "те",
+        'У' => "у",
+        'Ф' => "еф",
+        'Х' => "ха",
+        'Ц' => "це",
+        'Ч' => "че",
+        'Ш' => "ша",
+        'Щ' => "ща",
+        'Ь' => "м'який знак",
+        'Ю' => "ю",
+        'Я' => "я",
+        _ => return None,
+    })
+}
 
 /// Latin letter sequences and their Cyrillic transliteration, longest first.
 #[rustfmt::skip]

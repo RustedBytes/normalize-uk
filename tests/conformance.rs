@@ -1381,7 +1381,7 @@ fn run() {
             normalize_with("Слово «тест» тут", &straight_quotes),
             "Слово \"тест\" тут",
         );
-        let mut no_network = conservative.clone();
+        let mut no_network = conservative;
         no_network.normalize_network_addresses = false;
         check(
             "ip network opt-out",

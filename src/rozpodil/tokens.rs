@@ -249,13 +249,11 @@ pub fn tokenize(text: &str) -> Vec<Substring<'_>> {
                 atoms.get(i + 1),
                 buffer,
             );
-        if join {
-            stop = atoms[i].stop;
-        } else {
+        if !join {
             push_substring(&mut out, text, start, stop, false);
             start = atoms[i].start;
-            stop = atoms[i].stop;
         }
+        stop = atoms[i].stop;
     }
     push_substring(&mut out, text, start, stop, false);
     out

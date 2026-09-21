@@ -291,10 +291,8 @@ fn sent_join(split: &SentSplit<'_>) -> Action {
     let leading_space = &split.right[..first_non_space.unwrap_or(split.right.len())];
 
     // A wiki-style `== heading ==` never ends mid-way.
-    let current_line = match split.buffer.rfind(['\r', '\n']) {
-        Some(i) => &split.buffer[i + 1..],
-        None => split.buffer,
-    };
+    let current_line =
+        split.buffer.rfind(['\r', '\n']).map_or(split.buffer, |i| &split.buffer[i + 1..]);
     let heading = current_line
         .find(|c: char| !matches!(c, ' ' | '\t'))
         .is_some_and(|i| current_line[i..].starts_with("=="));
