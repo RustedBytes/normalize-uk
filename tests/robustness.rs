@@ -1,7 +1,7 @@
 //! Robustness checks: awkward input must never panic, lose the text entirely,
 //! or produce spans that do not line up with the source.
 
-use normalize_uk::uktextnorm::{flag_uncertain, normalize_preset, NormalizePreset};
+use ukrainian_tn::uktextnorm::{flag_uncertain, normalize_preset, NormalizePreset};
 
 #[rustfmt::skip]
 const PRESETS: [NormalizePreset; 4] = [

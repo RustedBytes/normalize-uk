@@ -1,6 +1,6 @@
 //! Loading and applying user-supplied word readings.
 
-use normalize_uk::uktextnorm::{
+use ukrainian_tn::uktextnorm::{
     load_vocabulary_tsv, normalize, normalize_with, parse_vocabulary, NormalizeOptions,
     VocabularyError,
 };

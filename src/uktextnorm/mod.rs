@@ -2,7 +2,7 @@
 //! abbreviations and other machine-readable spellings rewritten as words.
 //!
 //! ```
-//! use normalize_uk::uktextnorm::{normalize, normalize_preset, NormalizePreset};
+//! use ukrainian_tn::uktextnorm::{normalize, normalize_preset, NormalizePreset};
 //!
 //! assert_eq!(normalize("5 кг"), "п'ять кілограмів");
 //! let spoken = normalize_preset("5–7 кг", NormalizePreset::TtsFriendly);

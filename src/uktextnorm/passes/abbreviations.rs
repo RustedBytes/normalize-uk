@@ -67,7 +67,7 @@ fn match_key_at(text: &str, start: usize, key: &str) -> Option<usize> {
 /// Expands the abbreviations listed in the lexicon.
 ///
 /// ```
-/// # use normalize_uk::uktextnorm::normalize_abbreviations;
+/// # use ukrainian_tn::uktextnorm::normalize_abbreviations;
 /// assert_eq!(normalize_abbreviations("вул. Хрещатик"), "вулиця Хрещатик");
 /// ```
 pub fn normalize_abbreviations(text: &str) -> String {
@@ -113,7 +113,7 @@ pub fn normalize_abbreviations(text: &str) -> String {
 /// Spells out all-caps Cyrillic acronyms that have no vowel, letter by letter.
 ///
 /// ```
-/// # use normalize_uk::uktextnorm::expand_abbreviations;
+/// # use ukrainian_tn::uktextnorm::expand_abbreviations;
 /// // A vowel makes the run a word, so НАТО is left alone.
 /// assert_eq!(expand_abbreviations("СБР і НАТО"), "ес бе ер і НАТО");
 /// ```
@@ -162,7 +162,7 @@ static LATIN_DIACRITICS: LazyLock<HashMap<char, &'static str>> = LazyLock::new(|
 /// Rewrites Latin script as Cyrillic, longest letter sequences first.
 ///
 /// ```
-/// # use normalize_uk::uktextnorm::transliterate_to_cyrillic;
+/// # use ukrainian_tn::uktextnorm::transliterate_to_cyrillic;
 /// assert_eq!(transliterate_to_cyrillic("shash"), "шаш");
 /// ```
 pub fn transliterate_to_cyrillic(text: &str) -> String {

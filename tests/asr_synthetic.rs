@@ -11,7 +11,7 @@
 //!
 //! Run just these with: `cargo test --test asr_synthetic`
 
-use normalize_uk::uktextnorm::{normalize_with, InputTolerance, NormalizeOptions};
+use ukrainian_tn::uktextnorm::{normalize_with, InputTolerance, NormalizeOptions};
 
 // --- A tiny deterministic PRNG (xorshift) so runs are reproducible -----------
 

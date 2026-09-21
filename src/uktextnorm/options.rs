@@ -129,7 +129,7 @@ pub enum NormalizePreset {
 /// [`NormalizeOptions::preset`] and adjust the fields you care about:
 ///
 /// ```
-/// use normalize_uk::uktextnorm::{NormalizeOptions, NormalizePreset, RangeStyle};
+/// use ukrainian_tn::uktextnorm::{NormalizeOptions, NormalizePreset, RangeStyle};
 ///
 /// let options = NormalizeOptions {
 ///     range_style: RangeStyle::Compact,

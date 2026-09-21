@@ -8,7 +8,7 @@
 //!   other machine-readable spellings into the words a Ukrainian speaker would say.
 //!
 //! ```
-//! use normalize_uk::{rozpodil, uktextnorm};
+//! use ukrainian_tn::{rozpodil, uktextnorm};
 //!
 //! assert_eq!(uktextnorm::number_to_words(123), "сто двадцять три");
 //! let sentences = rozpodil::split_sentences("Перше речення. Друге.");
@@ -27,6 +27,9 @@
 
 pub mod rozpodil;
 pub mod uktextnorm;
+
+#[cfg(feature = "python")]
+mod python;
 
 /// The README, compiled as a doctest so its examples cannot drift from the API.
 #[cfg(doctest)]

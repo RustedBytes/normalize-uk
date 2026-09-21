@@ -213,7 +213,7 @@ const CYRILLIC: &str = r"\u{0400}-\u{04FF}";
 /// Reports every place in `text` where the reading involves a judgement call.
 ///
 /// ```
-/// # use normalize_uk::uktextnorm::flag_uncertain;
+/// # use ukrainian_tn::uktextnorm::flag_uncertain;
 /// let spans = flag_uncertain("10:30, $12");
 /// assert!(!spans.is_empty());
 /// ```

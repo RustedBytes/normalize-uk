@@ -4,7 +4,7 @@
 //! front-end would: build options with `InputTolerance::Asr`, normalize noisy
 //! input, and confirm both the reading and the uncertainty report.
 
-use normalize_uk::uktextnorm::{
+use ukrainian_tn::uktextnorm::{
     flag_uncertain_with, normalize_with, parse_asr_vocabulary, InputTolerance, NormalizeOptions,
     UncertaintyCategory,
 };

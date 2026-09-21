@@ -7,14 +7,14 @@
 // way it builds options by mutating a default in sequence.
 #![allow(clippy::too_many_lines, clippy::field_reassign_with_default)]
 
-use normalize_uk::uktextnorm::{
+use std::cell::RefCell;
+use ukrainian_tn::uktextnorm::{
     expand_abbreviations, flag_uncertain, normalize, normalize_abbreviations, normalize_preset,
     normalize_with, number_to_ordinal_words, number_to_words, number_to_words_case,
     transliterate_to_cyrillic, ColonStyle, CurrencySymbolPolicy, DateStyle, GrammaticalCase,
     NormalizeOptions, NormalizePreset, NumericDateOrder, OrdinalForm, PhoneStyle, QuoteStyle,
     RangeStyle, SymbolStyle, UncertainSpan, UncertaintyCategory, UncertaintySeverity,
 };
-use std::cell::RefCell;
 
 thread_local! {
     /// Failures collected while the suite runs.

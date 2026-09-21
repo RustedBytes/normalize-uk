@@ -1,6 +1,6 @@
 //! Segmentation tests, ported from the reference C++ suite.
 
-use normalize_uk::rozpodil::{split_sentences, tokenize, Substring};
+use ukrainian_tn::rozpodil::{split_sentences, tokenize, Substring};
 
 /// Locates each expected chunk in `text` in order, so the test cases stay
 /// readable while still asserting exact byte offsets.

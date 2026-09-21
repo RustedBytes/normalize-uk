@@ -1,6 +1,6 @@
 //! Golden-file tests, driven by the TSV corpora under `tests/data/`.
 
-use normalize_uk::uktextnorm::{normalize, normalize_preset, NormalizePreset};
+use ukrainian_tn::uktextnorm::{normalize, normalize_preset, NormalizePreset};
 
 /// Yields the `(input, expected)` rows of a two-column golden file.
 fn rows(source: &str) -> impl Iterator<Item = (usize, &str, &str)> {

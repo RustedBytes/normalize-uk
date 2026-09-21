@@ -682,7 +682,7 @@ fn protect_ambiguous_numeric_dates(text: &str, protected: &mut Protected) -> Str
 /// Normalizes `text` with the default options.
 ///
 /// ```
-/// # use normalize_uk::uktextnorm::normalize;
+/// # use ukrainian_tn::uktextnorm::normalize;
 /// assert_eq!(normalize("5 кг"), "п'ять кілограмів");
 /// ```
 #[must_use]

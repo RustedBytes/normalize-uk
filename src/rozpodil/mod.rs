@@ -4,7 +4,7 @@
 //! `&text[span.start..span.stop] == span.text` always holds.
 //!
 //! ```
-//! use normalize_uk::rozpodil::{split_sentences, tokenize};
+//! use ukrainian_tn::rozpodil::{split_sentences, tokenize};
 //!
 //! let text = "Це тест. І ще один!";
 //! assert_eq!(

@@ -1,8 +1,9 @@
-# normalize-uk
+# ukrainian-tn
 
-[![CI](https://github.com/RustedBytes/normalize-uk/actions/workflows/ci.yml/badge.svg)](https://github.com/RustedBytes/normalize-uk/actions/workflows/ci.yml)
+[![CI](https://github.com/RustedBytes/ukrainian-tn/actions/workflows/ci.yml/badge.svg)](https://github.com/RustedBytes/ukrainian-tn/actions/workflows/ci.yml)
 
-Ukrainian text normalization, tokenization and sentence splitting, in Rust.
+Ukrainian text normalization, tokenization and sentence splitting in Rust,
+with optional native Python bindings.
 
 The crate turns machine-readable spellings into the words a Ukrainian speaker
 would say — numbers, dates, times, ranges, units, currencies, abbreviations,
@@ -10,11 +11,11 @@ identifiers and web addresses — and splits text into sentences and tokens.
 
 ```toml
 [dependencies]
-normalize-uk = "0.5"
+ukrainian-tn = "0.6"
 ```
 
 ```rust
-use normalize_uk::{rozpodil, uktextnorm};
+use ukrainian_tn::{rozpodil, uktextnorm};
 
 assert_eq!(uktextnorm::normalize("5 кг"), "п'ять кілограмів");
 assert_eq!(uktextnorm::number_to_words(123), "сто двадцять три");
@@ -23,13 +24,46 @@ let sentences = rozpodil::split_sentences("Привіт! Це тест.");
 assert_eq!(sentences.iter().map(|s| s.text).collect::<Vec<_>>(), ["Привіт!", "Це тест."]);
 ```
 
+## Python
+
+The PyPI distribution is named `ukrainian-tn` and provides the
+`ukrainian_tn` import module:
+
+```console
+pip install ukrainian-tn
+```
+
+```python
+import ukrainian_tn
+
+assert ukrainian_tn.normalize("5 кг") == "п'ять кілограмів"
+
+options = ukrainian_tn.NormalizeOptions("tts_friendly")
+options.input_tolerance = "asr"
+print(ukrainian_tn.normalize_with("5–7 кг", options))
+
+for token in ukrainian_tn.tokenize("П'ять зв'язків."):
+    print(token.text, token.start, token.stop)
+```
+
+To build the extension from this repository, create and activate a Python
+virtual environment, install `maturin`, then run:
+
+```console
+maturin develop --release
+```
+
+The bindings use PyO3's stable ABI for Python 3.8 and newer. In Cargo, PyO3 is
+optional and is enabled only by the `python` feature; ordinary Rust builds do
+not compile or link Python support.
+
 ## Normalization
 
 `normalize` applies the default options. Use `normalize_preset` for a named
 bundle, or `normalize_with` for full control.
 
 ```rust
-use normalize_uk::uktextnorm::{normalize, normalize_preset, normalize_with,
+use ukrainian_tn::uktextnorm::{normalize, normalize_preset, normalize_with,
                                NormalizeOptions, NormalizePreset, RangeStyle};
 
 assert_eq!(normalize("01.05.2024"), "перше травня дві тисячі двадцять четвертого року");
@@ -68,7 +102,7 @@ resolve ambiguous input explicitly:
 resolve; invalid-value diagnostics always remain.
 
 ```rust
-use normalize_uk::uktextnorm::flag_uncertain;
+use ukrainian_tn::uktextnorm::flag_uncertain;
 
 let spans = flag_uncertain("Дата 30.02.2024");
 assert!(spans.iter().any(|s| s.text == "30.02.2024"));
@@ -90,7 +124,7 @@ separators and confusable spellings, then a bounded edit-distance match to the
 single closest entry (ties are left unresolved rather than guessed).
 
 ```rust
-use normalize_uk::uktextnorm::{
+use ukrainian_tn::uktextnorm::{
     flag_uncertain_with, normalize_with, InputTolerance, NormalizeOptions, UncertaintyCategory,
 };
 
@@ -112,7 +146,7 @@ The same fallback also runs over Cyrillic input, where ASR distorts the
 *reading itself* rather than a Latin spelling:
 
 ```rust
-use normalize_uk::uktextnorm::{normalize_with, InputTolerance, NormalizeOptions};
+use ukrainian_tn::uktextnorm::{normalize_with, InputTolerance, NormalizeOptions};
 
 let options = NormalizeOptions { input_tolerance: InputTolerance::Asr, ..Default::default() };
 
@@ -139,7 +173,7 @@ domain glossary or a full lexicon — and the *same* phonetic-key and
 bounded-edit rules repair distorted tokens against it.
 
 ```rust
-use normalize_uk::uktextnorm::{normalize_with, InputTolerance, NormalizeOptions};
+use ukrainian_tn::uktextnorm::{normalize_with, InputTolerance, NormalizeOptions};
 
 let options = NormalizeOptions {
     input_tolerance: InputTolerance::Asr,
@@ -159,7 +193,7 @@ to the canonical target — including a multi-word entry supplied via
 `asr_vocabulary`:
 
 ```rust
-# use normalize_uk::uktextnorm::{normalize_with, InputTolerance, NormalizeOptions};
+# use ukrainian_tn::uktextnorm::{normalize_with, InputTolerance, NormalizeOptions};
 let options = NormalizeOptions {
     input_tolerance: InputTolerance::Asr,
     asr_vocabulary: vec!["вай-фай".to_owned()],
@@ -172,7 +206,7 @@ assert!(normalize_with("увімкни вайфай", &options).contains("вай
 ## Numbers
 
 ```rust
-use normalize_uk::uktextnorm::{number_to_ordinal_words, number_to_words,
+use ukrainian_tn::uktextnorm::{number_to_ordinal_words, number_to_words,
                                number_to_words_case, number_to_words_digit_by_digit,
                                GrammaticalCase, OrdinalForm};
 
@@ -193,7 +227,7 @@ Both entry points borrow from the input and report byte offsets, so
 `&text[span.start..span.stop] == span.text` always holds.
 
 ```rust
-use normalize_uk::rozpodil::{split_sentences, tokenize};
+use ukrainian_tn::rozpodil::{split_sentences, tokenize};
 
 let text = "м. Київ, вул. Хрещатик, 1. Зустріч о 10:30.";
 assert_eq!(split_sentences(text).len(), 2);
@@ -207,7 +241,7 @@ English-word lexicons for a single call. The `normalize_english_words` switch
 also controls custom readings.
 
 ```rust
-use normalize_uk::uktextnorm::{normalize_with, NormalizeOptions};
+use ukrainian_tn::uktextnorm::{normalize_with, NormalizeOptions};
 
 let options = NormalizeOptions {
     vocabulary: [("google", "гуголь"), ("acme", "акме")]
@@ -229,10 +263,10 @@ Google	гуголь
 ```
 
 ```rust,no_run
-use normalize_uk::uktextnorm::load_vocabulary_tsv;
+use ukrainian_tn::uktextnorm::load_vocabulary_tsv;
 
 let words = load_vocabulary_tsv("my_words.tsv")?;
-# Ok::<(), normalize_uk::uktextnorm::VocabularyError>(())
+# Ok::<(), ukrainian_tn::uktextnorm::VocabularyError>(())
 ```
 
 Latin keys are single ASCII words, matched without regard to case.

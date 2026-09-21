@@ -53,7 +53,7 @@ pub(crate) fn under_thousand(n: u32) -> Vec<String> {
 /// Reads each ASCII digit of `digits` separately, ignoring anything else.
 ///
 /// ```
-/// # use normalize_uk::uktextnorm::number_to_words_digit_by_digit;
+/// # use ukrainian_tn::uktextnorm::number_to_words_digit_by_digit;
 /// assert_eq!(number_to_words_digit_by_digit("007"), "нуль нуль сім");
 /// ```
 pub fn number_to_words_digit_by_digit(digits: &str) -> String {
@@ -70,7 +70,7 @@ pub fn number_to_words_digit_by_digit(digits: &str) -> String {
 /// Values above [`MAX_SPELLED_NUMBER`] are read digit by digit instead.
 ///
 /// ```
-/// # use normalize_uk::uktextnorm::number_to_words;
+/// # use ukrainian_tn::uktextnorm::number_to_words;
 /// assert_eq!(number_to_words(0), "нуль");
 /// assert_eq!(number_to_words(1_002), "тисяча два");
 /// assert_eq!(number_to_words(2_002), "дві тисячі два");
@@ -197,7 +197,7 @@ impl GrammaticalCase {
 /// Spells `n` out as an ordinal in the requested form.
 ///
 /// ```
-/// # use normalize_uk::uktextnorm::{number_to_ordinal_words, OrdinalForm};
+/// # use ukrainian_tn::uktextnorm::{number_to_ordinal_words, OrdinalForm};
 /// assert_eq!(number_to_ordinal_words(1, OrdinalForm::NomM), "перший");
 /// assert_eq!(number_to_ordinal_words(3, OrdinalForm::Gen), "третього");
 /// ```
@@ -225,7 +225,7 @@ pub(crate) fn ordinal_words(n: u64, form: &str) -> String {
 /// Spells `n` out in the requested grammatical case.
 ///
 /// ```
-/// # use normalize_uk::uktextnorm::{number_to_words_case, GrammaticalCase};
+/// # use ukrainian_tn::uktextnorm::{number_to_words_case, GrammaticalCase};
 /// assert_eq!(number_to_words_case(2, GrammaticalCase::Genitive), "двох");
 /// ```
 #[must_use]

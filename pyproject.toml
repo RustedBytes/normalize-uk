@@ -1,0 +1,26 @@
+[build-system]
+requires = ["maturin>=1.9.4,<2"]
+build-backend = "maturin"
+
+[project]
+name = "ukrainian-tn"
+requires-python = ">=3.8"
+dynamic = ["version"]
+description = "Ukrainian text normalization, tokenization and sentence splitting"
+readme = "README.md"
+license = "MIT"
+keywords = ["ukrainian", "nlp", "normalization", "tokenizer", "tts"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Rust",
+    "Topic :: Text Processing :: Linguistic",
+]
+
+[project.urls]
+Documentation = "https://docs.rs/ukrainian-tn"
+Repository = "https://github.com/RustedBytes/ukrainian-tn"
+Changelog = "https://github.com/RustedBytes/ukrainian-tn/blob/main/CHANGELOG.md"
+
+[tool.maturin]
+features = ["python"]
+module-name = "ukrainian_tn"

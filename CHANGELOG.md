@@ -7,6 +7,13 @@ and the project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### Added
+
+- Added optional Python bindings powered by PyO3. The `ukrainian-tn` PyPI
+  package exposes normalization, segmentation, number reading, uncertainty,
+  and vocabulary APIs through the `ukrainian_tn` module when the `python`
+  Cargo feature is enabled.
+
 ## [0.5.0] - 2026-09-20
 
 The library is now a Rust crate. Normalization and segmentation behaviour is
@@ -16,7 +23,7 @@ against the Rust implementation.
 ### Changed
 
 - Rewrote the library in Rust. `uktextnorm` and `rozpodil` are now modules of
-  the `normalize-uk` crate rather than two C++ libraries.
+  the `ukrainian-tn` crate rather than two C++ libraries.
 - Overloads became distinct functions: `normalize`, `normalize_preset` and
   `normalize_with`; `flag_uncertain` and `flag_uncertain_with`.
 - `options_for_preset(p)` is now `NormalizeOptions::preset(p)`, and options are
@@ -38,7 +45,7 @@ against the Rust implementation.
 - The CLI tools, Python bindings, benchmarks and the fuzzing harness. Only the
   libraries and their tests were ported.
 - The legacy source-compatibility aliases `sentenize`, `cyrilize`, `cyrrilize`
-  and `normalize_ukrainian_with_preset`.
+  and `ukrainian_tnrainian_with_preset`.
 - The CMake build, which the Cargo build replaces.
 
 ## [0.4.7] - 2026-09-16
@@ -116,12 +123,12 @@ against the Rust implementation.
 
 ### Added
 
-- `NormalizeOptions` accepts named field overrides at construction, and `normalize_ukrainian` and `flag_uncertain`
+- `NormalizeOptions` accepts named field overrides at construction, and `ukrainian_tnrainian` and `flag_uncertain`
   accept explicit `options=` or `preset=` keyword arguments. Policy-aware uncertainty scanning omits ambiguity
   warnings resolved by the supplied policy while retaining invalid-value diagnostics.
-- `normalize_ukrainian_many` normalizes an iterable of Python strings with one options snapshot, preserving input
+- `ukrainian_tnrainian_many` normalizes an iterable of Python strings with one options snapshot, preserving input
   order and reusing results for identical strings within a batch. It accepts the same `options=` and `preset=`
-  selection as `normalize_ukrainian`.
+  selection as `ukrainian_tnrainian`.
 - `NormalizeOptions`, `Substring`, and `UncertainSpan` now support `copy.copy`, `copy.deepcopy`, and `pickle`.
 - A Python binding benchmark and regression tests cover batched normalization, value-object serialization, and
   concurrent normalization while `NormalizeOptions` is updated.
@@ -291,11 +298,11 @@ against the Rust implementation.
 - Bare ranges before sentence punctuation, ranges following a punctuation dash, and English `P.`/`pp.` page ranges
   now honor `RangeStyle.FromTo`.
 
-[0.4.7]: https://github.com/ThirdLetterC/normalize_uk-cpp/releases/tag/v0.4.7
-[0.4.6]: https://github.com/ThirdLetterC/normalize_uk-cpp/releases/tag/v0.4.6
-[0.4.5]: https://github.com/ThirdLetterC/normalize_uk-cpp/releases/tag/v0.4.5
-[0.4.4]: https://github.com/ThirdLetterC/normalize_uk-cpp/releases/tag/v0.4.4
-[0.4.3]: https://github.com/ThirdLetterC/normalize_uk-cpp/releases/tag/v0.4.3
-[0.4.2]: https://github.com/ThirdLetterC/normalize_uk-cpp/releases/tag/v0.4.2
-[0.4.1]: https://github.com/ThirdLetterC/normalize_uk-cpp/releases/tag/v0.4.1
-[0.4.0]: https://github.com/ThirdLetterC/normalize_uk-cpp/releases/tag/v0.4.0
+[0.4.7]: https://github.com/ThirdLetterC/ukrainian_tn-cpp/releases/tag/v0.4.7
+[0.4.6]: https://github.com/ThirdLetterC/ukrainian_tn-cpp/releases/tag/v0.4.6
+[0.4.5]: https://github.com/ThirdLetterC/ukrainian_tn-cpp/releases/tag/v0.4.5
+[0.4.4]: https://github.com/ThirdLetterC/ukrainian_tn-cpp/releases/tag/v0.4.4
+[0.4.3]: https://github.com/ThirdLetterC/ukrainian_tn-cpp/releases/tag/v0.4.3
+[0.4.2]: https://github.com/ThirdLetterC/ukrainian_tn-cpp/releases/tag/v0.4.2
+[0.4.1]: https://github.com/ThirdLetterC/ukrainian_tn-cpp/releases/tag/v0.4.1
+[0.4.0]: https://github.com/ThirdLetterC/ukrainian_tn-cpp/releases/tag/v0.4.0
