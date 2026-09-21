@@ -8,7 +8,7 @@ use std::sync::LazyLock;
 use super::lexicon;
 use super::numbers::number_to_words;
 use super::passes::{
-    expand_abbreviations, normalize_abbreviations, normalize_addresses,
+    canonicalize_asr, expand_abbreviations, normalize_abbreviations, normalize_addresses,
     normalize_biblical_references, normalize_case_context, normalize_compounds,
     normalize_coordinates, normalize_counted_noun_context, normalize_counted_nouns,
     normalize_currency, normalize_cyrillic_alphanumeric, normalize_dates, normalize_decimals,
@@ -30,7 +30,8 @@ use super::text::{
 };
 use super::validation::{is_valid_date, is_valid_iso_week, valid_hash_length, valid_isbn};
 use super::{
-    CurrencySymbolPolicy, NormalizeOptions, NormalizePreset, NumericDateOrder, SymbolStyle,
+    CurrencySymbolPolicy, InputTolerance, NormalizeOptions, NormalizePreset, NumericDateOrder,
+    SymbolStyle,
 };
 
 /// True when the text mentions any currency symbol, word or code.
@@ -713,6 +714,13 @@ pub fn normalize_with(text: &str, options: &NormalizeOptions) -> String {
     text = normalize_unicode(&text, options.quote_style);
     text = normalize_typography(&text);
 
+    // ASR tolerance: fold distorted Cyrillic tokens back to a canonical surface
+    // form before any rule pass runs, so the acronym/brand passes downstream see
+    // clean input (`пдв` -> `ПДВ`, `ватсап` -> `вотсап`). No-op under Strict.
+    if options.input_tolerance == InputTolerance::Asr {
+        text = canonicalize_asr(&text, options.input_tolerance, &options.asr_vocabulary);
+    }
+
     // Isolated mathematical variables must not pass through Latin/Cyrillic
     // homoglyph repair (ρh would otherwise become the unreadable ρг).
     for (from, to) in [
@@ -893,7 +901,7 @@ pub fn normalize_with(text: &str, options: &NormalizeOptions) -> String {
         text = normalize_technical_alphanumeric(&text);
     }
     if options.normalize_english_words && has_ascii_alpha(&text) {
-        text = normalize_english(&text, &options.vocabulary);
+        text = normalize_english(&text, &options.vocabulary, options.input_tolerance);
     }
     if options.transliterate_latin {
         text = transliterate_to_cyrillic(&text);

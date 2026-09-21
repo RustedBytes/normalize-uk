@@ -9,6 +9,7 @@
 //! assert!(spoken.starts_with("від"));
 //! ```
 
+mod fuzzy_match;
 mod lexicon;
 mod morphology;
 mod numbers;
@@ -29,7 +30,7 @@ pub use numbers::{
     GrammaticalCase, OrdinalForm, MAX_SPELLED_NUMBER,
 };
 pub use options::{
-    ColonStyle, CurrencySymbolPolicy, DateStyle, NormalizeOptions, NormalizePreset,
+    ColonStyle, CurrencySymbolPolicy, DateStyle, InputTolerance, NormalizeOptions, NormalizePreset,
     NumericDateOrder, PhoneStyle, QuoteStyle, RangeStyle, SymbolStyle,
 };
 pub use passes::{expand_abbreviations, normalize_abbreviations, transliterate_to_cyrillic};
@@ -37,4 +38,7 @@ pub use pipeline::{normalize, normalize_preset, normalize_with};
 pub use uncertainty::{
     flag_uncertain, flag_uncertain_with, UncertainSpan, UncertaintyCategory, UncertaintySeverity,
 };
-pub use vocabulary::{load_vocabulary_tsv, parse_vocabulary, VocabularyError};
+pub use vocabulary::{
+    load_asr_vocabulary_tsv, load_vocabulary_tsv, parse_asr_vocabulary, parse_vocabulary,
+    VocabularyError,
+};

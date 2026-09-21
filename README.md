@@ -77,6 +77,98 @@ assert!(spans.iter().any(|s| s.text == "30.02.2024"));
 `UncertainSpan::start` and `stop` are byte offsets, so
 `&source[span.start..span.stop] == span.text`.
 
+### Tolerating ASR-distorted input
+
+Speech recognition rarely hands the normalizer a clean token: the same word
+arrives with a missing apostrophe (`дев'ятнадцятого` → `девятнадцятого`), glued
+or split (`ю ес бі` → `юесбі`), or in a surzhyk / phonetic variant. Under the
+default `InputTolerance::Strict` such a token misses the exact lexicon lookups
+and passes through unchanged. `InputTolerance::Asr` adds a fallback that runs
+*only after an exact lookup misses*, resolving the token against the closed
+lexicon in two cheap, deterministic stages — a canonical key that folds
+separators and confusable spellings, then a bounded edit-distance match to the
+single closest entry (ties are left unresolved rather than guessed).
+
+```rust
+use normalize_uk::uktextnorm::{
+    flag_uncertain_with, normalize_with, InputTolerance, NormalizeOptions, UncertaintyCategory,
+};
+
+let options = NormalizeOptions { input_tolerance: InputTolerance::Asr, ..Default::default() };
+
+// A recognizer typo still reaches its reading.
+assert_eq!(normalize_with("spotifay", &options), "спотіфай");
+
+// Every approximate reading is reported, never silently guessed.
+let spans = flag_uncertain_with("spotifay", &options);
+assert!(spans.iter().any(|s| s.category == UncertaintyCategory::ApproximateMatch));
+```
+
+The fallback never runs on the hot path for clean text, and the search space is
+always a closed lexicon (hundreds of entries), never free text, so the
+behaviour is deterministic and testable by the golden corpora.
+
+The same fallback also runs over Cyrillic input, where ASR distorts the
+*reading itself* rather than a Latin spelling:
+
+```rust
+use normalize_uk::uktextnorm::{normalize_with, InputTolerance, NormalizeOptions};
+
+let options = NormalizeOptions { input_tolerance: InputTolerance::Asr, ..Default::default() };
+
+// "ватсап" is a one-edit distortion of the canonical reading "вотсап".
+assert_eq!(normalize_with("ватсап", &options), "вотсап");
+// A lowercased or phonetically-spelled acronym is restored, then expanded.
+assert!(normalize_with("сума пдв", &options).contains("додану вартість"));
+assert!(normalize_with("сума педеве", &options).contains("додану вартість"));
+// Everyday Ukrainian prose is never dragged onto a reading or acronym.
+assert_eq!(normalize_with("сьогодні я пив каву", &options), "сьогодні я пив каву");
+```
+
+The closed target sets are foreign-shaped by design — brand/English readings
+and acronym keys (plus their phonetic letter-name spellings, so `педеве` folds
+back to `ПДВ`). The canonical key is *phonetic*: it folds the confusions a
+Ukrainian recognizer actually makes (`і`/`ї`/`и`, `е`/`є`, `я`→`а`, `ю`→`у`,
+`ґ`→`г`, the soft sign, doublings, and Russian/surzhyk carry-over), so
+near-homophones collapse before any edit-distance step.
+
+Inflected ordinary words are not repaired by default, because fuzzy-matching
+open prose against itself would corrupt it. The universal extension point is
+`asr_vocabulary`: hand the normalizer any list of canonical Ukrainian words — a
+domain glossary or a full lexicon — and the *same* phonetic-key and
+bounded-edit rules repair distorted tokens against it.
+
+```rust
+use normalize_uk::uktextnorm::{normalize_with, InputTolerance, NormalizeOptions};
+
+let options = NormalizeOptions {
+    input_tolerance: InputTolerance::Asr,
+    asr_vocabulary: vec!["автентифікація".to_owned(), "ідентифікатор".to_owned()],
+    ..Default::default()
+};
+
+assert_eq!(normalize_with("автентіфікація", &options), "автентифікація");
+```
+
+Load the list from a one-column `word` TSV with `load_asr_vocabulary_tsv`.
+
+A recognizer also splits or glues multi-word targets (`вай фай` / `вайфай` for
+`вай-фай`). Because the phonetic key drops separators, a split window of tokens
+and its glued form share one key, so a sliding-window pass rejoins either shape
+to the canonical target — including a multi-word entry supplied via
+`asr_vocabulary`:
+
+```rust
+# use normalize_uk::uktextnorm::{normalize_with, InputTolerance, NormalizeOptions};
+let options = NormalizeOptions {
+    input_tolerance: InputTolerance::Asr,
+    asr_vocabulary: vec!["вай-фай".to_owned()],
+    ..Default::default()
+};
+assert!(normalize_with("увімкни вай фай", &options).contains("вай-фай")); // split
+assert!(normalize_with("увімкни вайфай", &options).contains("вай-фай")); // glued
+```
+
 ## Numbers
 
 ```rust
