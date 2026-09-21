@@ -1,6 +1,6 @@
 [package]
 name = "normalize-uk"
-version = "0.5.0"
+version = "0.6.0"
 edition = "2021"
 rust-version = "1.82"
 description = "Ukrainian text normalization, tokenization and sentence splitting: reads numbers, dates, units, currencies and abbreviations as words"

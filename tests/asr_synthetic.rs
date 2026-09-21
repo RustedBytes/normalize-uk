@@ -9,7 +9,7 @@
 //!
 //! The distorter is seeded and dependency-free, so runs are reproducible.
 //!
-//! Run just these with:  cargo test --test asr_synthetic
+//! Run just these with: `cargo test --test asr_synthetic`
 
 use normalize_uk::uktextnorm::{normalize_with, InputTolerance, NormalizeOptions};
 
@@ -126,7 +126,7 @@ fn synthetic_distortions_are_recovered() {
         }
     }
 
-    let rate = recovered as f64 / checked.max(1) as f64;
+    let rate = f64::from(recovered) / f64::from(checked.max(1));
     // The phonetic key + guarded 1-edit repair should recover the large
     // majority of single-distortion tokens. We assert a firm floor rather than
     // 100%, because a draw can stack several edits past the budget.
@@ -159,7 +159,7 @@ fn strict_mode_recovers_almost_none_of_the_distortions() {
         }
     }
     // Strict must leave essentially all distortions unrepaired.
-    let miss_rate = unchanged_from_target as f64 / checked.max(1) as f64;
+    let miss_rate = f64::from(unchanged_from_target) / f64::from(checked.max(1));
     assert!(miss_rate >= 0.95, "strict unexpectedly repaired some: miss_rate={miss_rate:.2}");
 }
 

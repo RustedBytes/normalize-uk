@@ -300,12 +300,11 @@ static ASR_SPELLED_ACRONYMS: LazyLock<HashMap<String, &'static str>> = LazyLock:
         let mut spelled = String::new();
         let mut ok = true;
         for cp in acronym.chars() {
-            match PRONUNCIATION.get(cp.to_string().as_str()) {
-                Some(name) => spelled.push_str(name),
-                None => {
-                    ok = false;
-                    break;
-                }
+            if let Some(name) = PRONUNCIATION.get(cp.to_string().as_str()) {
+                spelled.push_str(name);
+            } else {
+                ok = false;
+                break;
             }
         }
         // Only worth indexing when spelling it out actually lengthens it into a

@@ -5,7 +5,7 @@
 //! glued or split brand names, phonetically-spelled acronyms, surzhyk carry-over
 //! — paired with what the normalizer should produce under `InputTolerance::Asr`.
 //!
-//! Run just these with:  cargo test --test asr_realistic
+//! Run just these with: `cargo test --test asr_realistic`
 
 use normalize_uk::uktextnorm::{normalize_with, InputTolerance, NormalizeOptions};
 

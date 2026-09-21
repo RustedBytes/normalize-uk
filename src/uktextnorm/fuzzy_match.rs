@@ -80,22 +80,15 @@ pub(crate) fn canonical_key(token: &str) -> String {
         // closed foreign-shaped set, none of these merges two real targets.
         let folded = match cp {
             // Front vowels: the dominant unstressed-reduction confusion.
-            'і' | 'ї' => 'и',
-            'є' => 'е',
-            // Iotated back vowels: the glide is frequently dropped.
-            'я' => 'а',
+            // Include equivalent Russian/surzhyk carry-over spellings.
+            'і' | 'ї' | 'ы' => 'и',
+            'є' | 'э' => 'е',
+            // Iotated back vowels lose their glide; unstressed о also folds to а.
+            'я' | 'о' => 'а',
             'ю' => 'у',
-            // о/а akannya — a very common Ukrainian ASR confusion in unstressed
-            // position (`монобанк`->`монабанк`, `вотсап`->`ватсап`). Folded here
-            // so those resolve on the exact phonetic key; against the closed
-            // target set this does not merge two real targets (collisions are
-            // dropped when the index is built).
-            'о' => 'а',
             // Routinely merged consonant and its Russian twin.
             'ґ' => 'г',
-            // Surzhyk / Russian carry-over from the input side.
-            'ы' => 'и',
-            'э' => 'е',
+            // Russian/surzhyk carry-over from the input side.
             'ё' => 'о',
             // The soft sign and hard sign carry no vowel; drop them.
             'ь' | 'ъ' => '\0',
